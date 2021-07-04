@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1031249178139",
+    "project_id": "knee-acl-mcl",
+    "storage_bucket": "knee-acl-mcl.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1031249178139:android:c2d0c36ac05662fb6c52be",
+        "android_client_info": {
+          "package_name": "com.janua.knee_acl_mcl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1031249178139-clvit0fq8co373j6u1i0ijv72p0aasa4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvsfWIcXbzqhG1uvXYys5bRgTP0znb2SU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1031249178139-clvit0fq8co373j6u1i0ijv72p0aasa4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,7 +2,8 @@
     package="com.janua.knee_acl_mcl">
    <application
         android:label="knee_acl_mcl"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
