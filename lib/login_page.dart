@@ -40,13 +40,11 @@ class _LoginPageState extends State<LoginPage> {
     }
     ProgressBar().hide();
     if (userCredential?.user != null) {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
       );
     }
-
-
   }
 
   @override
@@ -54,76 +52,78 @@ class _LoginPageState extends State<LoginPage> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-        body: SingleChildScrollView(
-          child: Container(
-            margin: EdgeInsets.only(top: 20.0),
-            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Zaloguj się',
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-                SvgPicture.asset(
-                  "assets/images/login.svg",
-                  height: size.height * 0.4,
-                ),
-                Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        RoundedInput(
-                          controller: _emailController,
-                          icon: Icon(Icons.email, color: kPrimaryColor),
-                          inputType: InputType.EMAIL,
-                          hintText: 'Email',
-                        ),
-                        RoundedInput(
-                          controller: _passwordController,
-                          icon: Icon(Icons.lock, color: kPrimaryColor),
-                          hintText: 'Hasło',
-                          inputType: InputType.PASSWORD,
-                        ),
-                      ],
-                    )
-                ),
-                if (passwordError.isNotEmpty)
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: 30.0, bottom: 10, top: 15),
-                    child: Text(
-                      passwordError,
-                      style: TextStyle(color: kPrimaryColor),
-                    ),
+        body: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              margin: EdgeInsets.only(top: 20.0),
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
+              width: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Zaloguj się',
+                    style: Theme.of(context).textTheme.headline1,
                   ),
-                RoundedButton(
-                    text: "Zaloguj się".toUpperCase(),
-                    onClicked: _login
-                ),
-                SizedBox(height: size.height * 0.05),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Nie masz konta?'),
-                    SizedBox(width: 5),
-                    GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => RegisterPage()),
-                      ),
+                  SvgPicture.asset(
+                    "assets/images/login.svg",
+                    height: size.height * 0.4,
+                  ),
+                  Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          RoundedInput(
+                            controller: _emailController,
+                            icon: Icon(Icons.email, color: kPrimaryColor),
+                            inputType: InputType.EMAIL,
+                            hintText: 'Email',
+                          ),
+                          RoundedInput(
+                            controller: _passwordController,
+                            icon: Icon(Icons.lock, color: kPrimaryColor),
+                            hintText: 'Hasło',
+                            inputType: InputType.PASSWORD,
+                          ),
+                        ],
+                      )
+                  ),
+                  if (passwordError.isNotEmpty)
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: EdgeInsets.only(left: 30.0, bottom: 10, top: 15),
                       child: Text(
-                        'Zarejestruj się',
-                        style: TextStyle(
-                            color: kPrimaryColor,
-                            fontWeight: FontWeight.bold
-                        ),
+                        passwordError,
+                        style: TextStyle(color: kPrimaryColor),
                       ),
                     ),
-                  ],
-                )
-              ],
+                  RoundedButton(
+                      text: "Zaloguj się".toUpperCase(),
+                      onClicked: _login
+                  ),
+                  SizedBox(height: size.height * 0.05),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Nie masz konta?'),
+                      SizedBox(width: 5),
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => RegisterPage()),
+                        ),
+                        child: Text(
+                          'Zarejestruj się',
+                          style: TextStyle(
+                              color: kPrimaryColor,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         )

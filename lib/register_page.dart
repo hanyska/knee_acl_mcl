@@ -5,6 +5,7 @@ import 'package:knee_acl_mcl/components/rounded_button.dart';
 import 'package:knee_acl_mcl/components/rounded_input.dart';
 import 'package:knee_acl_mcl/components/toast.dart';
 import 'package:knee_acl_mcl/login_page.dart';
+import 'package:knee_acl_mcl/main/app_bar.dart';
 import 'package:knee_acl_mcl/providers/firebase_service.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
 
@@ -73,11 +74,10 @@ class _RegisterPageState extends State<RegisterPage> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: myAppBar(),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 20.0),
-          width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
