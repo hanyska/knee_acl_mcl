@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+import 'package:knee_acl_mcl/components/toast.dart';
 import 'package:knee_acl_mcl/exercises/exercise_details_page.dart';
 import 'package:knee_acl_mcl/exercises/exercises.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
@@ -17,18 +17,16 @@ class ExerciseItem extends StatefulWidget {
 }
 
 class _ExerciseItemState extends State<ExerciseItem> {
-  FlutterTts flutterTts = FlutterTts();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   void _goToExercise() {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ExerciseDetailsPage(exercise: widget.exercise)),
-    );
+    ).then((isSuccess) {
+      if (isSuccess is bool && isSuccess == true) {
+        Toaster.show('SUPEERR!!');
+      }
+    });
   }
 
   @override
@@ -60,7 +58,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
               subtitle: Text(widget.exercise.subtitle),
               trailing: IconButton(
                 icon: Icon(Icons.play_arrow),
-                onPressed: () => _goToExercise(),
+                onPressed: _goToExercise,
               )
           ),
         ],
