@@ -68,7 +68,7 @@ class _ExerciseDetailsPageState extends State<ExerciseDetailsPage> with TickerPr
             _toggleCounter();
             break;
           case 1:
-            setState(() => timerText = 'START');
+            if(mounted) setState(() => timerText = 'START');
             break;
           case 4:
             _play321Sound();
