@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:knee_acl_mcl/exercises/exercise_item.dart';
-import 'package:knee_acl_mcl/exercises/exercises.dart';
+import 'package:knee_acl_mcl/providers/exercises_service.dart';
 
 class ExercisesPage extends StatefulWidget {
   @override
@@ -14,7 +14,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
     return SafeArea(
       child: Container(
         child: Column(
-          children: exercises
+          children: ExercisesService.exercises
             .map((e) => ExerciseItem(exercise: e))
             .toList()
         )

@@ -5,8 +5,10 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:knee_acl_mcl/components/exercise_timer.dart';
 import 'package:knee_acl_mcl/exercises/exercises.dart';
+import 'package:knee_acl_mcl/helpers/date_time_helper.dart';
 import 'package:knee_acl_mcl/main/app_bar.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
+import 'package:wakelock/wakelock.dart';
 
 class ExerciseDetailsPage extends StatefulWidget {
   final Exercise exercise;
@@ -31,14 +33,15 @@ class _ExerciseDetailsPageState extends State<ExerciseDetailsPage> with TickerPr
   String get timerString {
     Duration duration = _controller.duration! * _controller.value;
     return _controller.isAnimating
-      ? '${duration.inMinutes.toString().padLeft(2, '0')}:${(duration.inSeconds % 60 + 1).toString().padLeft(2, '0')}'
+      ? DateTimeHelper.timerText(duration)
       : '00:00';
   }
 
   @override
   void initState() {
+    Wakelock.enable();
     _repeat = widget.exercise.repeat;
-    _controller = AnimationController(vsync: this, duration: Duration(seconds: widget.exercise.count));
+    _controller = AnimationController(vsync: this, duration: widget.exercise.time);
     _speakTitle();
     _start321Go();
     _repeatExercises();
@@ -86,7 +89,7 @@ class _ExerciseDetailsPageState extends State<ExerciseDetailsPage> with TickerPr
 
         _repeat == 0
             ? Navigator.of(context).pop(true)
-            : Future.delayed(Duration(seconds: 5), _toggleCounter);
+            : Future.delayed(widget.exercise.pauseTime, _toggleCounter);
 
       } else if (status == AnimationStatus.reverse) {
         FlutterTts().speak('START');
