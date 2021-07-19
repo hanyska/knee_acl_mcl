@@ -20,6 +20,8 @@ dependencies:
   wakelock: ^0.5.2
   grouped_list: ^4.0.0
   cloud_firestore: ^2.3.0
+  table_calendar: ^3.0.1
+  persistent_bottom_nav_bar: ^4.0.2
 
 dev_dependencies:
   flutter_test:

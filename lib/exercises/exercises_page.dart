@@ -10,6 +10,8 @@ import 'package:knee_acl_mcl/providers/exercises_service.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
 
 class ExercisesPage extends StatefulWidget {
+  static const routeName = '/exercises';
+
   @override
   _ExercisesPageState createState() => _ExercisesPageState();
 }

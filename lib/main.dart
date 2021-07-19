@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:knee_acl_mcl/calendar_page.dart';
+import 'package:knee_acl_mcl/exercises/exercises_page.dart';
 import 'package:knee_acl_mcl/helpers/colors.dart';
 import 'package:knee_acl_mcl/helpers/navigation_service.dart';
 import 'package:knee_acl_mcl/home_page.dart';
 import 'package:knee_acl_mcl/login_page.dart';
+import 'package:knee_acl_mcl/main/bottom_bar.dart';
+import 'package:knee_acl_mcl/profile_page.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
 
 void main() async {
@@ -37,11 +41,32 @@ class MyApp extends StatelessWidget {
           )
       ),
       routes: {
-        // NewRecipeScreen.routeName: (context) => NewRecipeScreen(),
+        HomePage.routeName: (context) => HomePage(),
+        ExercisesPage.routeName: (context) => ExercisesPage(),
+        CalendarPage.routeName: (context) => CalendarPage(),
+        ProfilePage.routeName: (context) => ProfilePage(),
       },
       home: firebaseUser != null
-        ? HomePage()
+        ? MainMenu()
         : LoginPage(),
+    );
+  }
+}
+
+
+class MainMenu extends StatefulWidget {
+  MainMenu({Key? key}) : super(key: key);
+
+  @override
+  _MainMenuState createState() => _MainMenuState();
+}
+
+class _MainMenuState extends State<MainMenu> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: MyBottomBar()
     );
   }
 }
