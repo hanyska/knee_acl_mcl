@@ -4,6 +4,7 @@ const kPrimaryColor = const Color(0xff8AB17D);
 
 const Color kWhite = Colors.white;
 const Color kVeryLightGrey = Color(0xFFebebeb);
+const Color kBlack = Color(0xff000000);
 const Color kGrey = Color(0xFF424B54);
 const Color kLightGrey = Color(0xff8d9398);
 const Color kDarkBlue = Color(0xff264653);

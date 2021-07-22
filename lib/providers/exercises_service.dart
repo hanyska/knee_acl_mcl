@@ -18,6 +18,22 @@ class ExercisesService {
       .catchError((_) => false);
   }
 
+  static Future<bool> updatedOrderId(Exercise exercise) {
+    return _exercisesCollection
+      .doc(exercise.id)
+      .update({'orderId': exercise.orderId})
+      .then((_) => true)
+      .catchError((_) => false);
+  }
+
+  static Future<bool> updatedExercise(Exercise exercise) {
+    return _exercisesCollection
+      .doc(exercise.id)
+      .update(exercise.toJson())
+      .then((_) => true)
+      .catchError((_) => false);
+  }
+
   static Future<List<Exercise>> getMyExercises() {
     return _exercisesCollection
       .get()
