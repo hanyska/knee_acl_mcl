@@ -105,7 +105,9 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
   List<Widget> get _items {
     List<Widget> _widgets = [];
 
-    for (String key in ExercisesService.groupedExercises.keys) {
+    List<dynamic> keys = ExercisesService.groupedExercises.keys.toList()..sort();
+
+    for (String key in keys) {
       _widgets.add(_titleWidget(key));
       _widgets.add(_sectionWidget(ExercisesService.groupedExercises[key]!.toList()));
     }
