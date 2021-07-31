@@ -14,7 +14,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: myAppBar(title: 'Ćwiczenia ACL'),
-      body: ExercisesPage()
+      body: ExercisesPage(),
     );
   }
 }

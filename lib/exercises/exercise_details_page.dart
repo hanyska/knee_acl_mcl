@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:knee_acl_mcl/components/exercise_timer.dart';
-import 'package:knee_acl_mcl/exercises/exercises.dart';
+import 'package:knee_acl_mcl/exercises/exercise.dart';
 import 'package:knee_acl_mcl/helpers/date_time_helper.dart';
 import 'package:knee_acl_mcl/main/app_bar.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';

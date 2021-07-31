@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:knee_acl_mcl/components/toast.dart';
 import 'package:knee_acl_mcl/exercises/exercise_details_page.dart';
-import 'package:knee_acl_mcl/exercises/exercises.dart';
+import 'package:knee_acl_mcl/exercises/exercise.dart';
+import 'package:knee_acl_mcl/models/progress.dart';
+import 'package:knee_acl_mcl/providers/progress_service.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
 
 class ExerciseItem extends StatefulWidget {
@@ -19,11 +21,16 @@ class ExerciseItem extends StatefulWidget {
 class _ExerciseItemState extends State<ExerciseItem> {
 
   void _goToExercise() {
+    ProgressService.addIfNotExistProgress(Progress());
+
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ExerciseDetailsPage(exercise: widget.exercise)),
     ).then((isSuccess) {
       if (isSuccess is bool && isSuccess == true) {
+        ProgressService.updateProgress(Progress(
+          doneIdExercises: [widget.exercise.id]
+        ));
         Toaster.show('SUPEERR!!');
       }
     });

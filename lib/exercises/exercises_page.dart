@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:knee_acl_mcl/exercises/exercise_details_page.dart';
 import 'package:knee_acl_mcl/exercises/exercise_item.dart';
-import 'package:knee_acl_mcl/exercises/exercises.dart';
+import 'package:knee_acl_mcl/exercises/exercise.dart';
 import 'package:knee_acl_mcl/helpers/date_time_helper.dart';
 import 'package:knee_acl_mcl/helpers/main_helper.dart';
 import 'package:knee_acl_mcl/providers/exercises_service.dart';
@@ -105,7 +105,7 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
   List<Widget> get _items {
     List<Widget> _widgets = [];
 
-    for (String key in ExercisesService.groupedExercises.keys) {
+    for (String key in ExercisesService.groupedExercises.keys.toList()..sort()) {
       _widgets.add(_titleWidget(key));
       _widgets.add(_sectionWidget(ExercisesService.groupedExercises[key]!.toList()));
     }
