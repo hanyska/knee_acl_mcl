@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:knee_acl_mcl/providers/firebase_service.dart';
 
 class ExercisesService {
-  static CollectionReference _mainCollection =  FirebaseFirestore.instance.collection('exercises');
-  static CollectionReference _exercisesCollection =_mainCollection.doc(FirebaseService.userId).collection('items');
+  static CollectionReference _mainCollection = FirebaseFirestore.instance.collection('exercises');
+  static CollectionReference _exercisesCollection = _mainCollection.doc(FirebaseService.userId!).collection('items');
   static Duration breakBetweenExercises = Duration(seconds: 5);
   static List<Exercise> _exercises = [];
 
