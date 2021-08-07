@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.janua.knee_acl_mcl">
    <application
-        android:label="knee_acl_mcl"
+        android:label="Knee ACL MCL"
         android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true">
         <activity
