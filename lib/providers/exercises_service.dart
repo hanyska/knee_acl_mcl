@@ -37,6 +37,12 @@ class ExercisesService {
       .catchError((_) => false);
   }
 
+  static Future<bool> updatedOrderIdExercises(List<Exercise> exercises) {
+    return Future.forEach(exercises, updatedOrderId)
+      .then((value) => true)
+      .catchError((_) => false);
+  }
+
   static Future<bool> deleteExercise(String exerciseId) {
     return _exercisesCollection
       .doc(exerciseId)

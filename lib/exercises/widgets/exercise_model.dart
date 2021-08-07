@@ -4,13 +4,14 @@ enum ExerciseGroup {LEVEL1, LEVEL2, LEVEL3, ALL}
 
 class Exercise {
   final String? id;
-  final int? orderId;
+  int? orderId;
   final Duration time;
   final int repeat;
   final Duration pauseTime;
   final String title;
   final String subtitle;
   final List<ExerciseGroup> group;
+  bool inMainList;
 
   Exercise({
     this.id,
@@ -20,7 +21,8 @@ class Exercise {
     this.pauseTime = const Duration(seconds: 3),
     required this.title,
     required this.subtitle,
-    this.group = const [ExerciseGroup.LEVEL1]
+    this.group = const [ExerciseGroup.LEVEL1],
+    this.inMainList = false
   });
 
   Map<String, dynamic> toJson() => {
@@ -32,6 +34,7 @@ class Exercise {
     'title': title,
     'subtitle': subtitle,
     'group': group.map((e) => MainHelper.enumToString(e)).toList(),
+    'inMainList': inMainList,
   };
 
   factory Exercise.fromJson(String id, Map<String, dynamic> json) {
@@ -46,7 +49,8 @@ class Exercise {
       pauseTime: Duration(seconds: json['pauseTime']),
       title: json['title'],
       subtitle: json['subtitle'],
-      group: _groups
+      group: _groups,
+      inMainList: json['inMainList'] ?? false,
     );
   }
 
