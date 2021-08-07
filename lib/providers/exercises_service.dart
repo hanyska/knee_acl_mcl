@@ -30,7 +30,21 @@ class ExercisesService {
     return _exercisesCollection
       .doc(exercise.id)
       .update(exercise.toJson())
-      .then((_) => true)
+      .then((_) {
+        getMyExercises();
+        return true;
+      })
+      .catchError((_) => false);
+  }
+
+  static Future<bool> deleteExercise(String exerciseId) {
+    return _exercisesCollection
+      .doc(exerciseId)
+      .delete()
+      .then((_) {
+        getMyExercises();
+        return true;
+      })
       .catchError((_) => false);
   }
 

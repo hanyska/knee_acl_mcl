@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:knee_acl_mcl/exercises/exercise_details_page.dart';
 import 'package:knee_acl_mcl/exercises/exercise_item.dart';
@@ -21,7 +20,6 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
   User? user;
   int _exercisesCount = 0;
   List<Exercise> _exercises = [];
-  final SlidableController slidableController = SlidableController();
 
   @override
   void initState() {
@@ -34,10 +32,9 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
     user = FirebaseAuth.instance.currentUser;
   }
 
-  void getExercises() {
-    ExercisesService
-        .getMyExercises()
-        .then((value) => setState(() => _exercises = value));
+  Future<List<Exercise>> getExercises() async {
+    return ExercisesService
+      .getMyExercises();
   }
 
   void _startExercises([List<Exercise>? exercises]) {
@@ -88,18 +85,18 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
   }
 
   Widget _sectionWidget(List<Exercise> exercises) {
-        exercises = exercises..sort((a, b) {
-          int result;
-          if (a.orderId == null) {
-            result = 1;
-          } else if (b.orderId == null) {
-            result = -1;
-          } else {
-            // Ascending Order
-            result = a.orderId!.compareTo(b.orderId!);
-          }
-          return result;
-        });
+    exercises = exercises..sort((a, b) {
+      int result;
+      if (a.orderId == null) {
+        result = 1;
+      } else if (b.orderId == null) {
+        result = -1;
+      } else {
+        // Ascending Order
+        result = a.orderId!.compareTo(b.orderId!);
+      }
+      return result;
+    });
 
     return Card(
       color: kYellow,
@@ -136,15 +133,28 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          ..._items,
-          SizedBox(height: 10),
-          _timeWidget('Całkowity czas: ', _exercises),
-          SizedBox(height: 10),
-        ],
-      ),
+    return FutureBuilder<List<Exercise>>(
+      future: getExercises(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<Exercise>? _exs = snapshot.data;
+          return RefreshIndicator(
+              onRefresh: getExercises,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ..._items,
+                    SizedBox(height: 10),
+                    _timeWidget('Całkowity czas: ', _exs),
+                    SizedBox(height: 10),
+                  ],
+                ),
+              )
+          );
+        } else {
+          return Center(child: CircularProgressIndicator(strokeWidth: 1.5));
+          }
+      },
     );
   }
 }
