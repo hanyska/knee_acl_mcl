@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:knee_acl_mcl/exercises/exercise_details_page.dart';
 import 'package:knee_acl_mcl/exercises/exercise_item.dart';
@@ -20,6 +21,7 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
   User? user;
   int _exercisesCount = 0;
   List<Exercise> _exercises = [];
+  final SlidableController slidableController = SlidableController();
 
   @override
   void initState() {
@@ -75,30 +77,48 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
   }
 
   Widget _titleWidget(String text) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.all(8.0),
       child: Text(
-          MainHelper.enumToString(text),
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 21,
-              color: kRed
-          ),
-          textAlign: TextAlign.center
+        MainHelper.enumToString(text),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21, color: kRed),
+        textAlign: TextAlign.center
       ),
     );
   }
 
   Widget _sectionWidget(List<Exercise> exercises) {
+        exercises = exercises..sort((a, b) {
+          int result;
+          if (a.orderId == null) {
+            result = 1;
+          } else if (b.orderId == null) {
+            result = -1;
+          } else {
+            // Ascending Order
+            result = a.orderId!.compareTo(b.orderId!);
+          }
+          return result;
+        });
+
     return Card(
-        color: kYellow,
-        child: Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Column(children: [
-            ...exercises.map((element) => ExerciseItem(exercise: element)),
-            _timeWidget('Czas: ', exercises)
-          ]),
-        )
+      color: kYellow,
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Column(children: [
+          SizedBox(height: 10),
+          ListView.separated(
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            physics: NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 5.0),
+            itemCount: exercises.length,
+            itemBuilder: (context, index) => ExerciseItem(exercise: exercises[index]),
+            separatorBuilder: (_, __) => SizedBox(height: 15),
+          ),
+          _timeWidget('Czas: ', exercises)
+        ]),
+      )
     );
   }
 
@@ -113,7 +133,6 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
     }
     return _widgets;
   }
-
 
   @override
   Widget build(BuildContext context) {
