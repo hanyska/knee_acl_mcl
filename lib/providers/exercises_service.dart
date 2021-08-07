@@ -1,4 +1,4 @@
-import 'package:knee_acl_mcl/exercises/exercise.dart';
+import 'package:knee_acl_mcl/exercises/widgets/exercise_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:knee_acl_mcl/providers/firebase_service.dart';
 

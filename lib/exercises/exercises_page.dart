@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:knee_acl_mcl/exercises/exercise_details_page.dart';
-import 'package:knee_acl_mcl/exercises/exercise_item.dart';
-import 'package:knee_acl_mcl/exercises/exercise.dart';
+import 'package:knee_acl_mcl/exercises/widgets/exercise_item.dart';
+import 'package:knee_acl_mcl/exercises/widgets/exercise_model.dart';
 import 'package:knee_acl_mcl/helpers/date_time_helper.dart';
 import 'package:knee_acl_mcl/helpers/main_helper.dart';
 import 'package:knee_acl_mcl/providers/exercises_service.dart';
@@ -92,7 +92,6 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
       } else if (b.orderId == null) {
         result = -1;
       } else {
-        // Ascending Order
         result = a.orderId!.compareTo(b.orderId!);
       }
       return result;
@@ -110,7 +109,11 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
             physics: NeverScrollableScrollPhysics(),
             padding: EdgeInsets.symmetric(horizontal: 5.0),
             itemCount: exercises.length,
-            itemBuilder: (context, index) => ExerciseItem(exercise: exercises[index]),
+            itemBuilder: (context, index) => ExerciseItem(
+              exercise: exercises[index],
+              onEdit: (bool edited) { if (edited) setState((){});},
+              onDelete: (bool deleted) { if (deleted) setState((){});},
+            ),
             separatorBuilder: (_, __) => SizedBox(height: 15),
           ),
           _timeWidget('Czas: ', exercises)

@@ -2,10 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:knee_acl_mcl/components/progress_bar.dart';
 import 'package:knee_acl_mcl/components/toast.dart';
 import 'package:knee_acl_mcl/exercises/exercise_details_page.dart';
-import 'package:knee_acl_mcl/exercises/exercise_form_dialog.dart';
-import 'package:knee_acl_mcl/exercises/exercise.dart';
+import 'package:knee_acl_mcl/exercises/widgets/exercise_form_dialog.dart';
+import 'package:knee_acl_mcl/exercises/widgets/exercise_model.dart';
 import 'package:knee_acl_mcl/models/progress.dart';
 import 'package:knee_acl_mcl/providers/exercises_service.dart';
 import 'package:knee_acl_mcl/providers/progress_service.dart';
@@ -14,10 +15,14 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ExerciseItem extends StatefulWidget {
   final Exercise exercise;
+  final Function? onEdit;
+  final Function? onDelete;
 
   const ExerciseItem({
     Key? key,
     required this.exercise,
+    this.onEdit,
+    this.onDelete,
   }) : super(key: key);
 
   @override
@@ -26,6 +31,7 @@ class ExerciseItem extends StatefulWidget {
 
 class _ExerciseItemState extends State<ExerciseItem> {
   final SlidableController slidableController = SlidableController();
+  final ProgressBar _progressBar = new ProgressBar();
 
   @override
   void dispose() {
@@ -119,10 +125,24 @@ class _ExerciseItemState extends State<ExerciseItem> {
   void onEditExercise() {
     ExerciseFormDialog
       .show(widget.exercise)
-      .then((value) { if (value) setState(() {});});
+      .then((value) {
+        if (widget.onEdit != null) widget.onEdit!(value);
+      });
   }
 
-  Future<bool> onDeleteExercise() {
+  void onDeleteExercise() {
+    _progressBar.show();
+
+    ExercisesService
+      .deleteExercise(widget.exercise.id!)
+      .then((value) {
+        _progressBar.hide();
+        if (value) Toaster.show('Firebase usunal cwiczenie ${widget.exercise.title.toLowerCase()}');
+        if (widget.onDelete != null) widget.onDelete!(value);
+      });
+  }
+
+  Future<bool> deleteExerciseDialog() {
     return showDialog<bool>(
       context: context,
       builder: (context) {
@@ -137,7 +157,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
             ),
             TextButton(
               child: Text('Ok'),
-              style: TextButton.styleFrom(primary: kRed,),
+              style: TextButton.styleFrom(primary: kRed),
               onPressed: () => Navigator.of(context).pop(true),
             ),
           ],
@@ -146,19 +166,13 @@ class _ExerciseItemState extends State<ExerciseItem> {
     ).then((value) => Future.value(value));
   }
 
-  void deleteExercise() {
-    ExercisesService
-      .deleteExercise(widget.exercise.id!)
-      .then((value) {
-        if (value) Toaster.show('Firebase usunal cwiczenie ${widget.exercise.title.toLowerCase()}');
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
     return Slidable.builder(
       key: Key(widget.exercise.id.toString()),
-      controller: slidableController,
+      controller: SlidableController(),
       direction: Axis.horizontal,
       actionPane: SlidableStrechActionPane(),
       actionExtentRatio: 0.25,
@@ -166,8 +180,8 @@ class _ExerciseItemState extends State<ExerciseItem> {
       dismissal: SlidableDismissal(
         child: SlidableDrawerDismissal(),
         closeOnCanceled: true,
-        onWillDismiss: (_) => onDeleteExercise(),
-        onDismissed: (actionType) => deleteExercise(),
+        onWillDismiss: (_) => deleteExerciseDialog(),
+        onDismissed: (actionType) => onDeleteExercise(),
       ),
       secondaryActionDelegate: SlideActionBuilderDelegate(
         actionCount: 2,
@@ -194,8 +208,8 @@ class _ExerciseItemState extends State<ExerciseItem> {
                 color: Colors.red.withOpacity(animation!.value),
                 icon: Icons.delete,
                 onTap: () {
-                  onDeleteExercise().then((bool isDelete) {
-                    if (isDelete) deleteExercise();
+                  deleteExerciseDialog().then((bool isDelete) {
+                    if (isDelete) onDeleteExercise();
                   });
                 },
               ),

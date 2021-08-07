@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:knee_acl_mcl/components/progress_bar.dart';
 import 'package:knee_acl_mcl/components/toast.dart';
-import 'package:knee_acl_mcl/exercises/exercise.dart';
+import 'package:knee_acl_mcl/exercises/widgets/exercise_model.dart';
 import 'package:knee_acl_mcl/helpers/custom_dialog.dart';
 import 'package:knee_acl_mcl/helpers/navigation_service.dart';
 import 'package:knee_acl_mcl/providers/exercises_service.dart';

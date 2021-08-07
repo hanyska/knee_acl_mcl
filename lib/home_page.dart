@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:knee_acl_mcl/exercises/exercise_form_dialog.dart';
+import 'package:knee_acl_mcl/exercises/widgets/exercise_form_dialog.dart';
 import 'package:knee_acl_mcl/exercises/exercises_page.dart';
 import 'package:knee_acl_mcl/main/app_bar.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
