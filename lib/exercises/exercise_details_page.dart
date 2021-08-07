@@ -6,8 +6,10 @@ import 'package:just_audio/just_audio.dart';
 import 'package:knee_acl_mcl/components/exercise_timer.dart';
 import 'package:knee_acl_mcl/exercises/widgets/exercise_model.dart';
 import 'package:knee_acl_mcl/helpers/date_time_helper.dart';
+import 'package:knee_acl_mcl/helpers/navigation_service.dart';
 import 'package:knee_acl_mcl/main/app_bar.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:wakelock/wakelock.dart';
 
 class ExerciseDetailsPage extends StatefulWidget {
@@ -17,6 +19,18 @@ class ExerciseDetailsPage extends StatefulWidget {
     Key? key,
     required this.exercise,
   }) : super(key: key);
+
+  static Future<bool> show(Exercise exercise) {
+    BuildContext _context = NavigationService.navigatorKey.currentContext!;
+
+    return pushNewScreen(
+      _context,
+      screen: ExerciseDetailsPage(exercise: exercise),
+      withNavBar: false,
+      pageTransitionAnimation: PageTransitionAnimation.slideUp,
+    )
+    .then((value) => value ?? false);
+  }
 
   @override
   _ExerciseDetailsPageState createState() => _ExerciseDetailsPageState();

@@ -11,16 +11,17 @@ import 'package:knee_acl_mcl/models/progress.dart';
 import 'package:knee_acl_mcl/providers/exercises_service.dart';
 import 'package:knee_acl_mcl/providers/progress_service.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ExerciseItem extends StatefulWidget {
   final Exercise exercise;
+  final bool inMainList;
   final Function? onEdit;
   final Function? onDelete;
 
   const ExerciseItem({
     Key? key,
     required this.exercise,
+    this.inMainList = false,
     this.onEdit,
     this.onDelete,
   }) : super(key: key);
@@ -41,19 +42,27 @@ class _ExerciseItemState extends State<ExerciseItem> {
   void _goToExercise() {
     ProgressService.addIfNotExistProgress(Progress());
 
-    pushNewScreen(
-      context,
-      screen: ExerciseDetailsPage(exercise: widget.exercise),
-      withNavBar: false,
-      pageTransitionAnimation: PageTransitionAnimation.slideUp,
-    ).then((isSuccess) {
-      if (isSuccess is bool && isSuccess == true) {
-        ProgressService.updateProgress(Progress(
-          doneIdExercises: [widget.exercise.id]
-        ));
-        Toaster.show('SUPEERR!!');
-      }
-    });
+    ExerciseDetailsPage
+      .show(widget.exercise)
+      .then((isSuccess) {
+        if (isSuccess is bool && isSuccess == true) {
+          ProgressService.updateProgress(Progress(
+            doneIdExercises: [widget.exercise.id]
+          ));
+          Toaster.show('SUPEERR!!');
+        }
+      });
+  }
+
+  void _addToMainList() {
+    Exercise _exercise = widget.exercise;
+    _exercise.inMainList = true;
+
+    ExercisesService
+      .updatedExercise(_exercise)
+      .then((value) {
+        Toaster.show('Dodano do listy głównej');
+      });
   }
 
   Widget iconWithText(IconData icon, String text) {
@@ -66,6 +75,16 @@ class _ExerciseItemState extends State<ExerciseItem> {
           textAlign: TextAlign.center,
         ),
       ]
+    );
+  }
+
+  Widget get _suffixButton {
+    return IconButton(
+      visualDensity: VisualDensity.compact,
+      splashRadius: 0.1,
+      splashColor: kPrimaryColor,
+      icon: Icon(widget.inMainList ? Icons.arrow_forward_ios : Icons.add, color: kPrimaryColor),
+      onPressed: widget.inMainList ? _goToExercise : _addToMainList,
     );
   }
 
@@ -89,7 +108,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
                     children: [
                       iconWithText(Icons.timer, "${widget.exercise.time.inSeconds}s"),
                       iconWithText(Icons.repeat, "${widget.exercise.repeat.toString()}"),
-                      iconWithText(Icons.info, "${widget.exercise.orderId.toString()}"),
+                      if(widget.inMainList) iconWithText(Icons.info, "${widget.exercise.orderId.toString()}"),
                     ],
                   ),
                 ),
@@ -107,13 +126,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
                     ),
                   ),
                 ),
-                IconButton(
-                  visualDensity: VisualDensity.compact,
-                  splashRadius: 0.1,
-                  splashColor: kPrimaryColor,
-                  icon: Icon(Icons.arrow_forward_ios, color: kPrimaryColor),
-                  onPressed: _goToExercise,
-                )
+                _suffixButton
               ],
             ),
           ),
