@@ -13,3 +13,5 @@ const Color kGreen = Color(0xff8AB17D);
 const Color kYellow = Color(0xffE9C46A);
 const Color kLOrange = Color(0xffF4A261);
 const Color kRed = Color(0xffE76F51);
+
+const double kDialogBorderRadius = 10.0;

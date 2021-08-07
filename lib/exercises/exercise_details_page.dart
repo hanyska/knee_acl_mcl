@@ -53,7 +53,7 @@ class _ExerciseDetailsPageState extends State<ExerciseDetailsPage> with TickerPr
   @override
   void dispose() {
     flutterTts.stop();
-    player.dispose();
+    // player.dispose();
     _controller.dispose();
     super.dispose();
   }

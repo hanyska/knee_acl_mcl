@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:knee_acl_mcl/components/toast.dart';
 import 'package:knee_acl_mcl/exercises/exercise_details_page.dart';
-import 'package:knee_acl_mcl/exercises/exercises.dart';
-import 'package:knee_acl_mcl/providers/exercises_service.dart';
+import 'package:knee_acl_mcl/exercises/exercise_form_dialog.dart';
 import 'package:knee_acl_mcl/exercises/exercise.dart';
 import 'package:knee_acl_mcl/models/progress.dart';
+import 'package:knee_acl_mcl/providers/exercises_service.dart';
 import 'package:knee_acl_mcl/providers/progress_service.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ExerciseItem extends StatefulWidget {
   final Exercise exercise;
@@ -26,12 +27,19 @@ class ExerciseItem extends StatefulWidget {
 class _ExerciseItemState extends State<ExerciseItem> {
   final SlidableController slidableController = SlidableController();
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _goToExercise() {
     ProgressService.addIfNotExistProgress(Progress());
 
-    Navigator.push(
+    pushNewScreen(
       context,
-      MaterialPageRoute(builder: (context) => ExerciseDetailsPage(exercise: widget.exercise)),
+      screen: ExerciseDetailsPage(exercise: widget.exercise),
+      withNavBar: false,
+      pageTransitionAnimation: PageTransitionAnimation.slideUp,
     ).then((isSuccess) {
       if (isSuccess is bool && isSuccess == true) {
         ProgressService.updateProgress(Progress(
@@ -109,74 +117,9 @@ class _ExerciseItemState extends State<ExerciseItem> {
   }
 
   void onEditExercise() {
-    TextEditingController _titleController = TextEditingController();
-    TextEditingController _subtitleController = TextEditingController();
-    TextEditingController _repeatController = TextEditingController();
-    TextEditingController _timeController = TextEditingController();
-    TextEditingController _pauseTimeController = TextEditingController();
-
-    _titleController.text = widget.exercise.title;
-    _subtitleController.text = widget.exercise.subtitle;
-    _repeatController.text = widget.exercise.repeat.toString();
-    _timeController.text = widget.exercise.time.inSeconds.toString();
-    _pauseTimeController.text = widget.exercise.pauseTime.inSeconds.toString();
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(widget.exercise.title),
-          content: Column(
-            children: [
-              TextField(
-                controller: _titleController,
-                decoration: InputDecoration(labelText: 'Nazwa'),
-              ),
-              TextField(
-                controller: _subtitleController,
-                decoration: InputDecoration(labelText: 'Opis'),
-              ),
-              TextField(
-                controller: _repeatController,
-                decoration: InputDecoration(labelText: 'Ilość powtórek'),
-              ),
-              TextField(
-                controller: _timeController,
-                decoration: InputDecoration(labelText: 'Czas jednego powtórzenia'),
-              ),
-              TextField(
-                controller: _pauseTimeController,
-                decoration: InputDecoration(labelText: 'Przerwa między ćwiczeniami'),
-
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Anuluj'),
-              style: TextButton.styleFrom(primary: kBlack),
-              onPressed: () => Navigator.of(context).pop(false),
-            ),
-            TextButton(
-              child: Text('Zapisz'),
-              style: TextButton.styleFrom(primary: kPrimaryColor,),
-              onPressed: () {
-                ExercisesService.updatedExercise(Exercise(
-                  id: widget.exercise.id,
-                  title: _titleController.text,
-                  subtitle: _subtitleController.text,
-                  repeat: int.parse(_repeatController.text),
-                  time: Duration(seconds: int.parse(_timeController.text)),
-                )).then((value) {
-                  print(value);
-                  Navigator.of(context).pop(true);
-                });
-              },
-            ),
-          ],
-        );
-      },
-    );
+    ExerciseFormDialog
+      .show(widget.exercise)
+      .then((value) { if (value) setState(() {});});
   }
 
   Future<bool> onDeleteExercise() {
@@ -204,7 +147,11 @@ class _ExerciseItemState extends State<ExerciseItem> {
   }
 
   void deleteExercise() {
-    Toaster.show('Firebase usunal cwiczenie ${widget.exercise.title.toLowerCase()}');
+    ExercisesService
+      .deleteExercise(widget.exercise.id!)
+      .then((value) {
+        if (value) Toaster.show('Firebase usunal cwiczenie ${widget.exercise.title.toLowerCase()}');
+    });
   }
 
   @override
@@ -235,7 +182,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
                   color: Colors.grey.shade200.withOpacity(animation!.value),
                   icon: Icons.more_horiz,
                   onTap: onEditExercise,
-                  closeOnTap: false,
+                  closeOnTap: true,
                 ),
               ),
             );
