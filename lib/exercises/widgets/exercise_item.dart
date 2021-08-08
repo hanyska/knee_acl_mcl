@@ -54,17 +54,6 @@ class _ExerciseItemState extends State<ExerciseItem> {
       });
   }
 
-  void _addToMainList() {
-    Exercise _exercise = widget.exercise;
-    _exercise.inMainList = true;
-
-    ExercisesService
-      .updatedExercise(_exercise)
-      .then((value) {
-        Toaster.show('Dodano do listy głównej');
-      });
-  }
-
   Widget iconWithText(IconData icon, String text) {
     return Row(
       children: [
@@ -84,7 +73,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
       splashRadius: 0.1,
       splashColor: kPrimaryColor,
       icon: Icon(widget.inMainList ? Icons.arrow_forward_ios : Icons.add, color: kPrimaryColor),
-      onPressed: widget.inMainList ? _goToExercise : _addToMainList,
+      onPressed: widget.inMainList ? _goToExercise : _addOrRemoveToMainList,
     );
   }
 
@@ -155,6 +144,18 @@ class _ExerciseItemState extends State<ExerciseItem> {
       });
   }
 
+  void _addOrRemoveToMainList([bool addToMainList = true]) {
+    Exercise _exercise = widget.exercise;
+    _exercise.inMainList = addToMainList;
+
+    ExercisesService
+      .updatedExercise(_exercise)
+      .then((value) {
+        Toaster.show(addToMainList ? 'Dodano do listy głównej' : 'Usunięto z listy głównej');
+        if (widget.onEdit != null) widget.onEdit!(value);
+      });
+  }
+
   Future<bool> deleteExerciseDialog() {
     return showDialog<bool>(
       context: context,
@@ -180,7 +181,6 @@ class _ExerciseItemState extends State<ExerciseItem> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
     return Slidable.builder(
@@ -193,8 +193,8 @@ class _ExerciseItemState extends State<ExerciseItem> {
       dismissal: SlidableDismissal(
         child: SlidableDrawerDismissal(),
         closeOnCanceled: true,
-        onWillDismiss: (_) => deleteExerciseDialog(),
-        onDismissed: (actionType) => onDeleteExercise(),
+        onWillDismiss: (_) => widget.inMainList ? Future.value(true) :deleteExerciseDialog(),
+        onDismissed: (actionType) => widget.inMainList ? _addOrRemoveToMainList(false) : onDeleteExercise(),
       ),
       secondaryActionDelegate: SlideActionBuilderDelegate(
         actionCount: 2,
@@ -217,13 +217,13 @@ class _ExerciseItemState extends State<ExerciseItem> {
             return ClipRRect(
               borderRadius: BorderRadius.only(topRight: Radius.circular(5), bottomRight: Radius.circular(5)),
               child: IconSlideAction(
-                caption: 'Delete',
+                caption: widget.inMainList ? 'Remove' : 'Delete',
                 color: Colors.red.withOpacity(animation!.value),
-                icon: Icons.delete,
+                icon: widget.inMainList ? Icons.remove : Icons.delete,
                 onTap: () {
-                  deleteExerciseDialog().then((bool isDelete) {
-                    if (isDelete) onDeleteExercise();
-                  });
+                  widget.inMainList
+                    ? _addOrRemoveToMainList(false)
+                    : deleteExerciseDialog().then((bool isDelete) { if (isDelete) onDeleteExercise(); });
                 },
               ),
             );
