@@ -26,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
 
     AuthService.login(_emailController.text, _passwordController.text)
       .then((value) {
+        ProgressBar().hide();
         if (value is bool && value) {
           Navigator.pushReplacement(
             context,

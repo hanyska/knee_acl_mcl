@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:knee_acl_mcl/components/progress_bar.dart';
 import 'package:knee_acl_mcl/main/app_bar.dart';
 import 'package:knee_acl_mcl/models/user_model.dart';
 import 'package:knee_acl_mcl/providers/user_service.dart';
@@ -14,12 +18,45 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final ProgressBar _progressBar = new ProgressBar();
+  User? _user;
+
+
   Future<User?> getUser() async {
     return UserService.getUser();
   }
 
   void logout() {
     UserService.logout();
+  }
+
+  void _pickImage(ImageSource source) async {
+    final XFile? image = await ImagePicker().pickImage(source: source);
+
+    if (image == null) return;
+
+    _progressBar.show();
+    UserService
+      .addUpdateAvatar(_user!.id, File(image.path))
+      .then((value) {
+        if (value) setState(() {});
+        _progressBar.hide();
+      });
+  }
+
+  void _onUpdateAvatar() {
+    showModalBottomSheet(
+      context: context,
+      useRootNavigator: true,
+      builder: (BuildContext context) {
+       return Column(
+         mainAxisSize: MainAxisSize.min,
+         children: [
+           _profileItem(Icons.photo_camera, 'Zrób zdjęcie', () => _pickImage(ImageSource.camera)),
+           _profileItem(Icons.photo, 'Wybierz z galerii', () => _pickImage(ImageSource.gallery)),
+         ],
+       );
+    });
   }
 
   Widget _profileItem(IconData mainIcon, String text, Function onClick) {
@@ -37,26 +74,28 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _photoWidget(User? user) {
+  Widget _photoWidget() {
     return ElevatedButton(
-      onPressed: () => print('Change avatar!'),
+      onPressed: _onUpdateAvatar,
       style: ElevatedButton.styleFrom(shape: CircleBorder()),
       child: Stack(
         children: [
           CircleAvatar(
-            maxRadius: 75.0,
+            radius: 75.0,
             backgroundColor: Colors.grey.shade50,
-            child: user == null || user.imageUrl == null
-                ? Icon(Icons.person, size: 100, color: Theme.of(context).primaryColor)
-                : Image.network(user.imageUrl!),
+            backgroundImage: NetworkImage(
+                _user == null || _user!.imageUrl == null
+                  ? 'https://palmbayprep.org/wp-content/uploads/2015/09/user-icon-placeholder.png'
+                  : _user!.imageUrl!
+            ),
           ),
           Positioned(
               bottom: 10,
               right: 10,
               child: CircleAvatar(
-                maxRadius: 15.0,
+                radius: 15.0,
                 backgroundColor: Colors.grey.shade200,
-                child: Icon(Icons.photo_camera, color: Colors.grey.shade700, size: 18)
+                child: Icon(Icons.photo_camera, color: Color(0xff929190), size: 18)
               )
           )
         ],
@@ -72,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
           future: getUser(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              User? _user = snapshot.data;
+              _user = snapshot.data;
 
               return RefreshIndicator(
                   onRefresh: getUser,
@@ -80,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       children: [
                         SizedBox(height: 20),
-                        _photoWidget(_user),
+                        _photoWidget(),
                         SizedBox(height: 20),
                         _profileItem(Icons.person, 'Mój profil', () => print('Mój profil')),
                         _profileItem(Icons.notifications, 'Powiadomienia', () => print('Powiadomienia')),

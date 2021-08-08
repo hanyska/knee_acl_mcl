@@ -1,10 +1,8 @@
-import 'package:knee_acl_mcl/providers/firebase_service.dart';
-
 class User {
   final String id;
   final String email;
   final String? username;
-  final String? imageUrl;
+  String? imageUrl;
   final bool showNotifications;
   final String langCode;
 
@@ -18,7 +16,7 @@ class User {
   });
 
   Map<String, dynamic> toJson() => {
-    'id': FirebaseService.userId,
+    'id': id,
     'email': email,
     'username': username,
     'imageUrl': imageUrl,
