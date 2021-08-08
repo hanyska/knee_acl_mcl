@@ -20,38 +20,40 @@ class CustomDialog extends StatelessWidget {
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.0),
-        decoration: new BoxDecoration(
-          color: kWhite,
-          shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(kDialogBorderRadius),
-          boxShadow: [
-            BoxShadow(
-              color: kBlack.withOpacity(0.3),
-              blurRadius: 10.0,
-              offset: const Offset(0.0, 10.0),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            SizedBox(height: 15.0),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.w700,
+      child: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          decoration: new BoxDecoration(
+            color: kWhite,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(kDialogBorderRadius),
+            boxShadow: [
+              BoxShadow(
+                color: kBlack.withOpacity(0.3),
+                blurRadius: 10.0,
+                offset: const Offset(0.0, 10.0),
               ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 10.0),
-            body,
-            SizedBox(height: 20.0),
-            footer,
-            SizedBox(height: 5.0),
-          ],
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              SizedBox(height: 15.0),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.w700,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 10.0),
+              body,
+              SizedBox(height: 20.0),
+              footer,
+              SizedBox(height: 5.0),
+            ],
+          ),
         ),
       )
     );

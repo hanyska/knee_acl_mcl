@@ -1,7 +1,3 @@
-import 'package:knee_acl_mcl/helpers/main_helper.dart';
-
-enum ExerciseGroup {LEVEL1, LEVEL2, LEVEL3, ALL}
-
 class Exercise {
   final String? id;
   int? orderId;
@@ -10,7 +6,6 @@ class Exercise {
   final Duration pauseTime;
   final String title;
   final String subtitle;
-  final List<ExerciseGroup> group;
   bool inMainList;
 
   Exercise({
@@ -21,7 +16,6 @@ class Exercise {
     this.pauseTime = const Duration(seconds: 3),
     required this.title,
     required this.subtitle,
-    this.group = const [ExerciseGroup.LEVEL1],
     this.inMainList = false
   });
 
@@ -33,26 +27,19 @@ class Exercise {
     'pauseTime': pauseTime.inSeconds,
     'title': title,
     'subtitle': subtitle,
-    'group': group.map((e) => MainHelper.enumToString(e)).toList(),
     'inMainList': inMainList,
   };
 
-  factory Exercise.fromJson(String id, Map<String, dynamic> json) {
-    List<ExerciseGroup> _groups = [];
-    json['group'].forEach((e) => _groups.add(MainHelper.enumFromString(e, ExerciseGroup.values)!));
-
-    return new Exercise(
-      id: id,
-      orderId: json['orderId'],
-      time: Duration(seconds: json['time']),
-      repeat: json['repeat'],
-      pauseTime: Duration(seconds: json['pauseTime']),
-      title: json['title'],
-      subtitle: json['subtitle'],
-      group: _groups,
-      inMainList: json['inMainList'] ?? false,
-    );
-  }
+  factory Exercise.fromJson(String id, Map<String, dynamic> json) => Exercise(
+    id: id,
+    orderId: json['orderId'],
+    time: Duration(seconds: json['time']),
+    repeat: json['repeat'],
+    pauseTime: Duration(seconds: json['pauseTime']),
+    title: json['title'],
+    subtitle: json['subtitle'],
+    inMainList: json['inMainList'] ?? false,
+  );
 
   static List<Exercise> fromJsonToList(dynamic json) => List<Exercise>
     .from((json as List)

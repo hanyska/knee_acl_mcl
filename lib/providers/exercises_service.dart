@@ -63,21 +63,6 @@ class ExercisesService {
       });
   }
 
-  static Map<dynamic, List<Exercise>> get groupedExercises {
-    Map<dynamic, List<Exercise>> groupedLists = {};
-
-    exercises.forEach((product) {
-      product.group.forEach((group) {
-        if (groupedLists['$group'] == null) {
-          groupedLists['$group'] = <Exercise>[];
-        }
-        (groupedLists['$group'] as List<Exercise>).add(product);
-      });
-    });
-
-    return groupedLists;
-  }
-
 
   static Duration getTotalExercisesTime([List<Exercise>? listOfExercises]) {
     Duration _totalDuration = Duration(seconds: 0);
