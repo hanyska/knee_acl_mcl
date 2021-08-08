@@ -68,6 +68,8 @@ class ExercisesService {
     Duration _totalDuration = Duration(seconds: 0);
     List<Exercise> _exercises = listOfExercises ?? exercises;
 
+    if (_exercises.length == 0) return _totalDuration;
+
     _exercises.forEach((exercise) {
       _totalDuration += (exercise.time * exercise.repeat) + (exercise.pauseTime * (exercise.repeat - 1));
     });
