@@ -41,6 +41,20 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
   TextEditingController _repeatController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
   TextEditingController _pauseTimeController = TextEditingController();
+  bool _isInMainList = false;
+
+  @override
+  void initState() {
+    if (widget.exercise != null) {
+      _titleController.text = widget.exercise!.title;
+      _subtitleController.text = widget.exercise!.subtitle;
+      _repeatController.text = widget.exercise!.repeat.toString();
+      _timeController.text = widget.exercise!.time.inSeconds.toString();
+      _pauseTimeController.text = widget.exercise!.pauseTime.inSeconds.toString();
+      _isInMainList = widget.exercise!.inMainList;
+    }
+    super.initState();
+  }
 
   void onAddExercise() {
     _progressBar.show();
@@ -49,6 +63,8 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
       subtitle: _subtitleController.text,
       repeat: NumberUtils.toInt(_repeatController.text) ?? 0,
       time: Duration(seconds: NumberUtils.toInt(_timeController.text) ?? 0),
+      inMainList: _isInMainList,
+      orderId: 0,
     )).then((value) {
       Toaster.show('Pomyślnie dodano ćwiczenie!');
       _progressBar.hide();
@@ -61,11 +77,11 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
     ExercisesService.updatedExercise(Exercise(
       id: widget.exercise!.id,
       orderId: widget.exercise!.orderId,
-      group: widget.exercise!.group,
       title: _titleController.text,
       subtitle: _subtitleController.text,
       repeat: NumberUtils.toInt(_repeatController.text) ?? 0,
       time: Duration(seconds: NumberUtils.toInt(_timeController.text) ?? 0),
+      inMainList: _isInMainList,
     )).then((value) {
       Toaster.show('Pomyślnie zaktualizowano ćwiczenie!');
       _progressBar.hide();
@@ -113,6 +129,14 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
             suffixText: 's'
           ),
         ),
+        CheckboxListTile(
+          contentPadding: EdgeInsets.all(0),
+          controlAffinity: ListTileControlAffinity.leading,
+          value: _isInMainList,
+          onChanged: (bool? newValue) => setState(() => _isInMainList = newValue ?? false),
+          title: Text('Dodać do głównej listy?'),
+          tristate: true,
+        ),
       ],
     );
   }
@@ -135,19 +159,6 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
         ),
       ],
     );
-  }
-
-
-  @override
-  void initState() {
-    if (widget.exercise != null) {
-      _titleController.text = widget.exercise!.title;
-      _subtitleController.text = widget.exercise!.subtitle;
-      _repeatController.text = widget.exercise!.repeat.toString();
-      _timeController.text = widget.exercise!.time.inSeconds.toString();
-      _pauseTimeController.text = widget.exercise!.pauseTime.inSeconds.toString();
-    }
-    super.initState();
   }
 
   @override
