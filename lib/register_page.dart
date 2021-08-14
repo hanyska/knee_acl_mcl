@@ -1,12 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:knee_acl_mcl/components/progress_bar.dart';
 import 'package:knee_acl_mcl/components/rounded_button.dart';
 import 'package:knee_acl_mcl/components/rounded_input.dart';
-import 'package:knee_acl_mcl/components/toast.dart';
 import 'package:knee_acl_mcl/login_page.dart';
 import 'package:knee_acl_mcl/main/app_bar.dart';
-import 'package:knee_acl_mcl/providers/firebase_service.dart';
+import 'package:knee_acl_mcl/providers/auth_service.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -31,6 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    ProgressBar().hide();
     super.dispose();
   }
 
@@ -44,28 +43,25 @@ class _RegisterPageState extends State<RegisterPage> {
     if (!_formKey.currentState!.validate()) return;
 
     ProgressBar().show();
-    UserCredential? userCredential;
+    AuthService
+      .register(_emailController.text, _passwordController.text)
+      .then((value) {
+        ProgressBar().hide();
+        if (value is bool && value) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => LoginPage()),
+          );
+        }  else if (value is String) {
+          _passwordController.clear();
+          _confirmPasswordController.clear();
+          setState(() => _passwordError = value);
+        } else {
+          _passwordController.clear();
+          _confirmPasswordController.clear();
+        }
+      });
 
-    try {
-      userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-    } on FirebaseAuthException catch (error) {
-      String errorMessage = FirebaseService.getMessageFromErrorCode(error.code);
-      _passwordController.clear();
-      _confirmPasswordController.clear();
-      Toaster.show(errorMessage, toasterType: ToasterType.DANGER, isLongLength: true);
-    }
-
-    if (userCredential?.user != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
-      );
-      Toaster.show('Pomyślnie założono konto. Możesz się teraz zalogować', toasterType: ToasterType.SUCCESS, isLongLength: true);
-    }
-    ProgressBar().hide();
   }
 
 

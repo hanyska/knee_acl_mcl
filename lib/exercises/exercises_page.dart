@@ -107,6 +107,8 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
   }
 
   Widget _exercisesList(List<Exercise>? exercises, [bool isMain = false]) {
+    bool _isEmpty = exercises == null || exercises.length == 0;
+
     return Column(
       children: [
         Container(
@@ -123,14 +125,14 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
             width: MediaQuery.of(context).size.width,
             height: exercises == null ? 100 : null,
             padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
-            child: exercises == null
+            child: _isEmpty
                 ? Center(child: Text('Brak ćwiczeń', style: TextStyle(color: kWhite, fontSize: 18, fontWeight: FontWeight.bold)))
                 : isMain
                   ? _listReordered(exercises)
                   : _list(exercises)
           ),
         ),
-        if(isMain)
+        if(isMain && !_isEmpty)
           _timeWidget('Czas: ', exercises)
       ],
     );

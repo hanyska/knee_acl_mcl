@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:knee_acl_mcl/components/progress_bar.dart';
 import 'package:knee_acl_mcl/components/rounded_button.dart';
 import 'package:knee_acl_mcl/components/rounded_input.dart';
-import 'package:knee_acl_mcl/home_page.dart';
-import 'package:knee_acl_mcl/providers/firebase_service.dart';
+import 'package:knee_acl_mcl/main.dart';
+import 'package:knee_acl_mcl/providers/auth_service.dart';
 import 'package:knee_acl_mcl/register_page.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
-
-import 'components/toast.dart';
 
 class LoginPage extends StatefulWidget {
 
@@ -26,25 +23,22 @@ class _LoginPageState extends State<LoginPage> {
   void _login() async {
     if (!_formKey.currentState!.validate()) return;
     ProgressBar().show();
-    UserCredential? userCredential;
-    try {
-      userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-    } on FirebaseAuthException catch (error) {
-      String errorMessage = FirebaseService.getMessageFromErrorCode(error.code);
-      _passwordController.clear();
-      setState(() => passwordError = errorMessage);
-      Toaster.show(errorMessage, toasterType: ToasterType.DANGER, isLongLength: true);
-    }
-    ProgressBar().hide();
-    if (userCredential?.user != null) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
-    }
+
+    AuthService.login(_emailController.text, _passwordController.text)
+      .then((value) {
+        ProgressBar().hide();
+        if (value is bool && value) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => MainMenu()),
+          );
+        } else if (value is String) {
+          _passwordController.clear();
+          setState(() => passwordError = value);
+        } else {
+          _passwordController.clear();
+        }
+    });
   }
 
   @override

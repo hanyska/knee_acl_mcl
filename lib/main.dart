@@ -33,11 +33,11 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           fontFamily: 'Lato',
           textTheme: TextTheme(
-              headline1: TextStyle(
-                fontFamily: 'Dancing',
-                fontWeight: FontWeight.bold,
-                fontSize: 52,
-              )
+            headline1: TextStyle(
+              fontFamily: 'Dancing',
+              fontWeight: FontWeight.bold,
+              fontSize: 52,
+            )
           )
       ),
       routes: {
