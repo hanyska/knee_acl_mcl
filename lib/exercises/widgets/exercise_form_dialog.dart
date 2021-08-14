@@ -96,11 +96,13 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
         TextField(
           controller: _titleController,
           keyboardType: TextInputType.text,
+          textCapitalization: TextCapitalization.sentences,
           decoration: InputDecoration(labelText: 'Nazwa'),
         ),
         TextField(
           controller: _subtitleController,
           keyboardType: TextInputType.multiline,
+          textCapitalization: TextCapitalization.sentences,
           minLines: 1,
           maxLines: 5,
           decoration: InputDecoration(labelText: 'Opis'),
@@ -110,7 +112,7 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
               labelText: 'Ilość powtórek',
-              suffixText: 's'
+              suffixText: 'raz(y)'
           ),
         ),
         TextField(

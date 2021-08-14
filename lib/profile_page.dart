@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:knee_acl_mcl/components/progress_bar.dart';
+import 'package:knee_acl_mcl/components/rounded_input.dart';
+import 'package:knee_acl_mcl/components/toast.dart';
 import 'package:knee_acl_mcl/main/app_bar.dart';
 import 'package:knee_acl_mcl/models/user_model.dart';
 import 'package:knee_acl_mcl/providers/user_service.dart';
@@ -20,6 +22,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final ProgressBar _progressBar = new ProgressBar();
   User? _user;
+
 
 
   Future<User?> getUser() async {
@@ -74,7 +77,59 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _photoWidget() {
+  void _showMyProfileWidget() {
+    TextEditingController _userNameController = new TextEditingController();
+    _userNameController.text = _user!.username ?? '';
+
+    showModalBottomSheet(
+      useRootNavigator: true,
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => Container(
+        padding: MediaQuery.of(context).viewInsets,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            RoundedInput(
+              controller: _userNameController,
+              inputType: InputType.TEXT,
+              hintText: 'Username',
+            ),
+            SizedBox(width: 5),
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(29),
+                child: ElevatedButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                  child: Text('Wyślij', style: TextStyle(color: Colors.white)),
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    _progressBar.show();
+
+                    User user = _user!;
+                    user.username = _userNameController.text;
+                    UserService
+                      .updateUser(user)
+                      .then((value) {
+                        Toaster.show("Pomyśnie zaktualizowano użytkownika");
+                        _progressBar.hide();
+                        Navigator.of(context).pop();
+                      })
+                      .catchError((_) { _progressBar.hide(); });
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      )
+    );
+  }
+
+  Widget get _photoWidget {
     return ElevatedButton(
       onPressed: _onUpdateAvatar,
       style: ElevatedButton.styleFrom(shape: CircleBorder()),
@@ -119,10 +174,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       children: [
                         SizedBox(height: 20),
-                        _photoWidget(),
+                        _photoWidget,
                         SizedBox(height: 20),
-                        _profileItem(Icons.person, 'Mój profil', () => print('Mój profil')),
-                        _profileItem(Icons.notifications, 'Powiadomienia', () => print('Powiadomienia')),
+                        _profileItem(Icons.person, 'Mój profil', _showMyProfileWidget),
+                        // _profileItem(Icons.notifications, 'Powiadomienia', () => print('Powiadomienia')),
                         _profileItem(Icons.settings, 'Ustawienia', () => print('Ustawienia')),
                         _profileItem(Icons.language, 'Język', () => print('Język')),
                         _profileItem(Icons.logout, 'Logout', UserService.logout),

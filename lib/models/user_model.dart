@@ -1,7 +1,7 @@
 class User {
   final String id;
   final String email;
-  final String? username;
+  String? username;
   String? imageUrl;
   final bool showNotifications;
   final String langCode;
