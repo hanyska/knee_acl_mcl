@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:knee_acl_mcl/exercises/exercise_details_page.dart';
@@ -37,7 +38,7 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
         if (isSuccess is bool && isSuccess == true) {
           _exercisesCount++;
           if (_exercisesCount < _exercisesList.length) {
-            await FlutterTts().speak('PRZERWA');
+            await FlutterTts().speak(tr('messages.pause'));
             Future.delayed(ExercisesService.breakBetweenExercises, _startExercises);
           }
         }
@@ -58,7 +59,7 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
         ]),
         if (exercises != null) TextButton(
           onPressed: () => _startExercises(exercises),
-          child: Text('Start', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: kRed)),
+          child: Text(tr('button.start'), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: kRed)),
         )
       ],
     );
@@ -114,7 +115,7 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
         Container(
           padding: EdgeInsets.symmetric(vertical: 20.0),
           child: Text(
-            isMain ? 'Ćwiczenia' : 'Pozostałe ćwiczenia',
+            isMain ? tr('exercises.exercises') : tr('exercises.otherExercises'),
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21, color: kRed),
             textAlign: TextAlign.center
           ),
@@ -126,14 +127,14 @@ class _ExercisesPageState extends State<ExercisesPage> with TickerProviderStateM
             height: exercises == null ? 100 : null,
             padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
             child: _isEmpty
-                ? Center(child: Text('Brak ćwiczeń', style: TextStyle(color: kWhite, fontSize: 18, fontWeight: FontWeight.bold)))
+                ? Center(child: Text(tr('exercises.noExercises'), style: TextStyle(color: kWhite, fontSize: 18, fontWeight: FontWeight.bold)))
                 : isMain
                   ? _listReordered(exercises)
                   : _list(exercises)
           ),
         ),
         if(isMain && !_isEmpty)
-          _timeWidget('Czas: ', exercises)
+          _timeWidget('${tr('exercises.noExercises')}: ', exercises)
       ],
     );
   }

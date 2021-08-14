@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:knee_acl_mcl/components/progress_bar.dart';
 import 'package:knee_acl_mcl/components/toast.dart';
@@ -66,7 +67,7 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
       inMainList: _isInMainList,
       orderId: 0,
     )).then((value) {
-      Toaster.show('Pomyślnie dodano ćwiczenie!');
+      Toaster.show(tr('exercises.addedExerciseMessage'));
       _progressBar.hide();
       Navigator.of(context).pop(true);
     });
@@ -83,7 +84,7 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
       time: Duration(seconds: NumberUtils.toInt(_timeController.text) ?? 0),
       inMainList: _isInMainList,
     )).then((value) {
-      Toaster.show('Pomyślnie zaktualizowano ćwiczenie!');
+      Toaster.show(tr('exercises.updatedExerciseMessage'));
       _progressBar.hide();
       Navigator.of(context).pop(true);
     });
@@ -97,7 +98,7 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
           controller: _titleController,
           keyboardType: TextInputType.text,
           textCapitalization: TextCapitalization.sentences,
-          decoration: InputDecoration(labelText: 'Nazwa'),
+          decoration: InputDecoration(labelText: tr('textField.name')),
         ),
         TextField(
           controller: _subtitleController,
@@ -105,21 +106,21 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
           textCapitalization: TextCapitalization.sentences,
           minLines: 1,
           maxLines: 5,
-          decoration: InputDecoration(labelText: 'Opis'),
+          decoration: InputDecoration(labelText: tr('textField.description')),
         ),
         TextField(
           controller: _repeatController,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
-              labelText: 'Ilość powtórek',
-              suffixText: 'raz(y)'
+              labelText: tr('textField.repetitionsNumber'),
+              suffixText: tr('textField.timeShort')
           ),
         ),
         TextField(
           controller: _timeController,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
-            labelText: 'Czas jednego powtórzenia',
+            labelText: tr('textField.oneRepetitionTime'),
             suffixText: 's'
           ),
         ),
@@ -127,7 +128,7 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
           controller: _pauseTimeController,
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
-            labelText: 'Przerwa między ćwiczeniami',
+            labelText: tr('textField.breakBetweenExercises'),
             suffixText: 's'
           ),
         ),
@@ -136,7 +137,7 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
           controlAffinity: ListTileControlAffinity.leading,
           value: _isInMainList,
           onChanged: (bool? newValue) => setState(() => _isInMainList = newValue ?? false),
-          title: Text('Dodać do głównej listy?'),
+          title: Text(tr('textField.addToMainList')),
           tristate: true,
         ),
       ],
@@ -150,12 +151,12 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-          child: Text('Anuluj'),
+          child: Text(tr('button.cancel')),
           style: TextButton.styleFrom(primary: kBlack),
           onPressed: () => Navigator.of(context).pop(false),
         ),
         TextButton(
-          child: Text(_exist ? 'Zapisz' : 'Dodaj'),
+          child: Text(_exist ? tr('button.save') : tr('button.add')),
           style: TextButton.styleFrom(primary: kPrimaryColor),
           onPressed: () => _exist ? onUpdateExercise() : onAddExercise(),
         ),
@@ -166,7 +167,7 @@ class _ExerciseFormDialogState extends State<ExerciseFormDialog> {
   @override
   Widget build(BuildContext context) {
     return CustomDialog(
-      title: widget.exercise?.title ?? 'Nowe ćwiczenie',
+      title: widget.exercise?.title ?? tr("exercises.newExercise"),
       body: _body,
       footer: _footer,
     );

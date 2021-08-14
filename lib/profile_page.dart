@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:knee_acl_mcl/components/progress_bar.dart';
@@ -55,8 +56,8 @@ class _ProfilePageState extends State<ProfilePage> {
        return Column(
          mainAxisSize: MainAxisSize.min,
          children: [
-           _profileItem(Icons.photo_camera, 'Zrób zdjęcie', () => _pickImage(ImageSource.camera)),
-           _profileItem(Icons.photo, 'Wybierz z galerii', () => _pickImage(ImageSource.gallery)),
+           _profileItem(Icons.photo_camera, tr('profile.takePhoto'), () => _pickImage(ImageSource.camera)),
+           _profileItem(Icons.photo, tr('profile.chooseFromGallery'), () => _pickImage(ImageSource.gallery)),
          ],
        );
     });
@@ -93,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
             RoundedInput(
               controller: _userNameController,
               inputType: InputType.TEXT,
-              hintText: 'Username',
+              hintText: tr('textField.username'),
             ),
             SizedBox(width: 5),
             Expanded(
@@ -104,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: EdgeInsets.symmetric(vertical: 20),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),
-                  child: Text('Wyślij', style: TextStyle(color: Colors.white)),
+                  child: Text(tr('button.send'), style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     FocusScope.of(context).unfocus();
                     _progressBar.show();
@@ -114,7 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     UserService
                       .updateUser(user)
                       .then((value) {
-                        Toaster.show("Pomyśnie zaktualizowano użytkownika");
+                        Toaster.show(tr('profile.updatedUser'));
                         _progressBar.hide();
                         Navigator.of(context).pop();
                       })
@@ -161,7 +162,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: myAppBar(title: 'Profile'),
+        appBar: myAppBar(title: tr('profile.myProfile')),
         body: FutureBuilder<User?>(
           future: getUser(),
           builder: (context, snapshot) {
@@ -176,11 +177,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         SizedBox(height: 20),
                         _photoWidget,
                         SizedBox(height: 20),
-                        _profileItem(Icons.person, 'Mój profil', _showMyProfileWidget),
+                        _profileItem(Icons.person, tr('profile.myProfile'), _showMyProfileWidget),
                         // _profileItem(Icons.notifications, 'Powiadomienia', () => print('Powiadomienia')),
-                        _profileItem(Icons.settings, 'Ustawienia', () => print('Ustawienia')),
-                        _profileItem(Icons.language, 'Język', () => print('Język')),
-                        _profileItem(Icons.logout, 'Logout', UserService.logout),
+                        _profileItem(Icons.settings, tr('profile.settings'), () => print('Ustawienia')),
+                        _profileItem(Icons.language, tr('profile.language'), () => print('Język')),
+                        _profileItem(Icons.logout, tr('profile.logout'), UserService.logout),
                       ],
                     ),
                   ));

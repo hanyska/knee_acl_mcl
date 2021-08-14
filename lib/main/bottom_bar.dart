@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:knee_acl_mcl/calendar_page.dart';
 import 'package:knee_acl_mcl/home_page.dart';
@@ -28,15 +29,15 @@ class _MyBottomBarState extends State<MyBottomBar> {
     return [
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
-        title: "Home",
+        title: tr('button.home'),
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.calendar_today),
-        title: "Progress",
+        title: tr('button.progress'),
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.person),
-        title: "Profile",
+        title: tr('button.profile'),
       ),
     ];
   }

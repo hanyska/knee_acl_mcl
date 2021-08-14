@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:knee_acl_mcl/exercises/widgets/exercise_form_dialog.dart';
 import 'package:knee_acl_mcl/exercises/exercises_page.dart';
@@ -15,7 +16,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: myAppBar(title: 'Ćwiczenia ACL'),
+      appBar: myAppBar(title: tr("exercises.title")),
       body: ExercisesPage(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

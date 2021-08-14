@@ -1,0 +1,66 @@
+{
+  "auth": {
+    "login": "Zaloguj się",
+    "register": "Zarejestruj się",
+    "noAccount": "Nie masz konta?",
+    "haveAccount": "Masz już konto?"
+  },
+  "textField": {
+    "email": "Email",
+    "password": "Hasło",
+    "repeatPassword": "Repeat password",
+    "name": "Nazwa",
+    "username": "Nick",
+    "description": "Opis",
+    "repetitionsNumber": "Ilość powtórek",
+    "timeShort": "raz(y)",
+    "oneRepetitionTime": "Czas jednego powtórzenia",
+    "breakBetweenExercises": "Przerwa między ćwiczeniami",
+    "addToMainList": "Dodać do głównej listy?"
+  },
+  "button": {
+    "home": "Start",
+    "progress": "Progres",
+    "profile": "Profil",
+    "start": "Start",
+    "stop": "Stop",
+    "cancel": "Anuluj",
+    "ok": "Ok",
+    "more": "Więcej",
+    "remove": "Usuń",
+    "delete": "Usuń",
+    "save": "Zapisz",
+    "add": "Dodaj",
+    "send": "Wyślij"
+  },
+  "exercises": {
+    "title": "Ćwiczenia ACL",
+    "exercises": "Ćwiczenia",
+    "otherExercises": "Pozostałe ćwiczenia",
+    "noExercises": "Brak ćwiczeń",
+    "newExercise": "Nowe ćwiczenie",
+    "time": "Czas",
+    "deleteExerciseMessage": "Czy na pewno chcesz usunąć to ćwiczenie?",
+    "addedExerciseMessage": "Pomyślnie dodano ćwiczenie!",
+    "updatedExerciseMessage": "Pomyślnie zaktualizowano ćwiczenie!",
+    "deletedExercises": "Usunięto ćwiczenie",
+    "addedToMainList": "Dodano do listy głównej",
+    "removedToMainList": "Usunięto z listy głównej"
+  },
+  "profile": {
+    "myProfile": "Mój profil",
+    "settings": "Ustawienia",
+    "language": "Język",
+    "logout": "Wyloguj",
+    "takePhoto": "Zrób zdjęcie",
+    "chooseFromGallery": "Wybierz z galerii",
+    "updatedUser": "Pomyśnie zaktualizowano użytkownika"
+  },
+  "messages": {
+    "pause": "Przerwa",
+    "excellent": "Super!"
+  },
+  "error": {
+    "differentPasswords": "Hasła muszą być takie same!"
+  }
+}
