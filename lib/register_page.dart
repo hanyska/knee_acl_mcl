@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:knee_acl_mcl/components/progress_bar.dart';
 import 'package:knee_acl_mcl/components/rounded_button.dart';
@@ -80,7 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 20.0, bottom: 40),
                 child: Text(
-                  'Zarejestruj się',
+                  tr('auth.register'),
                   style: Theme.of(context).textTheme.headline1,
                 ),
               ),
@@ -92,18 +93,18 @@ class _RegisterPageState extends State<RegisterPage> {
                       controller: _emailController,
                       icon: Icon(Icons.email, color: kPrimaryColor),
                       inputType: InputType.EMAIL,
-                      hintText: 'Twój email',
+                      hintText: tr('textField.email'),
                     ),
                     RoundedInput(
                       controller: _passwordController,
                       icon: Icon(Icons.lock, color: kPrimaryColor),
-                      hintText: 'Hasło',
+                      hintText: tr('textField.password'),
                       inputType: InputType.PASSWORD,
                     ),
                     RoundedInput(
                       controller: _confirmPasswordController,
                       icon: Icon(Icons.lock, color: kPrimaryColor),
-                      hintText: 'Powtórz hasło',
+                      hintText: tr('textField.repeatPassword'),
                       inputType: InputType.PASSWORD,
                     ),
                   ]
@@ -119,14 +120,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
               RoundedButton(
-                text: "Zarejestruj się".toUpperCase(),
+                text: tr('auth.register').toUpperCase(),
                 onClicked: _register
               ),
               SizedBox(height: size.height * 0.05),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Masz już konto?'),
+                  Text(tr('auth.haveAccount')),
                   SizedBox(width: 5),
                   GestureDetector(
                     onTap: () => Navigator.push(
@@ -134,7 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       MaterialPageRoute(builder: (context) => LoginPage()),
                     ),
                     child: Text(
-                      'Zaloguj się',
+                      tr('auth.login'),
                       style: TextStyle(
                           color: kPrimaryColor,
                           fontWeight: FontWeight.bold

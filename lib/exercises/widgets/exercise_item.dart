@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:knee_acl_mcl/components/progress_bar.dart';
@@ -49,7 +50,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
           ProgressService.updateProgress(Progress(
             doneIdExercises: [widget.exercise.id]
           ));
-          Toaster.show('SUPEERR!!');
+          Toaster.show(tr('messages.excellent'));
         }
       });
   }
@@ -139,7 +140,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
       .deleteExercise(widget.exercise.id!)
       .then((value) {
         _progressBar.hide();
-        if (value) Toaster.show('Firebase usunal cwiczenie ${widget.exercise.title.toLowerCase()}');
+        if (value) Toaster.show('${tr('exercises.deletedExercises')} ${widget.exercise.title.toLowerCase()}');
         if (widget.onDelete != null) widget.onDelete!(value);
       });
   }
@@ -151,7 +152,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
     ExercisesService
       .updatedExercise(_exercise)
       .then((value) {
-        Toaster.show(addToMainList ? 'Dodano do listy głównej' : 'Usunięto z listy głównej');
+        Toaster.show(addToMainList ? tr('exercises.addedToMainList') : tr('exercises.removedToMainList'));
         if (widget.onEdit != null) widget.onEdit!(value);
       });
   }
@@ -162,15 +163,15 @@ class _ExerciseItemState extends State<ExerciseItem> {
       builder: (context) {
         return AlertDialog(
           title: Text(widget.exercise.title),
-          content: Text('Czy na pewno chcesz usunąć to ćwiczenie?'),
+          content: Text(tr('exercises.deleteExerciseMessage')),
           actions: <Widget>[
             TextButton(
-              child: Text('Anuluj'),
+              child: Text(tr('button.cancel')),
               style: TextButton.styleFrom(primary: kBlack),
               onPressed: () => Navigator.of(context).pop(false),
             ),
             TextButton(
-              child: Text('Ok'),
+              child: Text(tr('button.ok')),
               style: TextButton.styleFrom(primary: kRed),
               onPressed: () => Navigator.of(context).pop(true),
             ),
@@ -205,7 +206,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
               child: ClipRRect(
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(5), bottomLeft: Radius.circular(5)),
                 child: IconSlideAction(
-                  caption: 'More',
+                  caption: tr('button.more'),
                   color: Colors.grey.shade200.withOpacity(animation!.value),
                   icon: Icons.more_horiz,
                   onTap: onEditExercise,
@@ -217,7 +218,7 @@ class _ExerciseItemState extends State<ExerciseItem> {
             return ClipRRect(
               borderRadius: BorderRadius.only(topRight: Radius.circular(5), bottomRight: Radius.circular(5)),
               child: IconSlideAction(
-                caption: widget.inMainList ? 'Remove' : 'Delete',
+                caption: widget.inMainList ? tr('button.remove') : tr('button.delete'),
                 color: Colors.red.withOpacity(animation!.value),
                 icon: widget.inMainList ? Icons.remove : Icons.delete,
                 onTap: () {

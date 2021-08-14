@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:just_audio/just_audio.dart';
@@ -82,7 +83,7 @@ class _ExerciseDetailsPageState extends State<ExerciseDetailsPage> with TickerPr
             _toggleCounter();
             break;
           case 1:
-            if(mounted) setState(() => timerText = 'START');
+            if(mounted) setState(() => timerText = tr('button.start').toUpperCase());
             break;
           case 4:
             _play321Sound();
@@ -99,14 +100,14 @@ class _ExerciseDetailsPageState extends State<ExerciseDetailsPage> with TickerPr
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.dismissed) {
         _repeat--;
-        FlutterTts().speak('STOP');
+        FlutterTts().speak(tr('button.stop').toUpperCase());
 
         _repeat == 0
             ? Navigator.of(context).pop(true)
             : Future.delayed(widget.exercise.pauseTime, _toggleCounter);
 
       } else if (status == AnimationStatus.reverse) {
-        FlutterTts().speak('START');
+        FlutterTts().speak(tr('button.start').toUpperCase());
       }
     });
   }

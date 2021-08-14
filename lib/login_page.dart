@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:knee_acl_mcl/components/progress_bar.dart';
@@ -56,7 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Zaloguj się',
+                    tr('auth.login'),
                     style: Theme.of(context).textTheme.headline1,
                   ),
                   SvgPicture.asset(
@@ -71,12 +72,12 @@ class _LoginPageState extends State<LoginPage> {
                             controller: _emailController,
                             icon: Icon(Icons.email, color: kPrimaryColor),
                             inputType: InputType.EMAIL,
-                            hintText: 'Email',
+                            hintText: tr('textField.email'),
                           ),
                           RoundedInput(
                             controller: _passwordController,
                             icon: Icon(Icons.lock, color: kPrimaryColor),
-                            hintText: 'Hasło',
+                            hintText: tr('textField.password'),
                             inputType: InputType.PASSWORD,
                           ),
                         ],
@@ -92,14 +93,14 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   RoundedButton(
-                      text: "Zaloguj się".toUpperCase(),
+                      text: tr('auth.login').toUpperCase(),
                       onClicked: _login
                   ),
                   SizedBox(height: size.height * 0.05),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Nie masz konta?'),
+                      Text(tr('auth.noAccount')),
                       SizedBox(width: 5),
                       GestureDetector(
                         onTap: () => Navigator.push(
@@ -107,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                           MaterialPageRoute(builder: (context) => RegisterPage()),
                         ),
                         child: Text(
-                          'Zarejestruj się',
+                          tr('auth.register'),
                           style: TextStyle(
                               color: kPrimaryColor,
                               fontWeight: FontWeight.bold

@@ -1,0 +1,66 @@
+{
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Do you have an account?"
+  },
+  "textField": {
+    "email": "Email",
+    "password": "Password",
+    "repeatPassword": "Repeat password",
+    "name": "Name",
+    "username": "Username",
+    "description": "Description",
+    "repetitionsNumber": "Number of repetitions",
+    "timeShort": "time(s)",
+    "oneRepetitionTime": "One repetition time",
+    "breakBetweenExercises": "Break between exercises",
+    "addToMainList": "Add to main list?"
+  },
+  "button": {
+    "home": "Home",
+    "progress": "Progress",
+    "profile": "Profile",
+    "start": "Start",
+    "stop": "Stop",
+    "cancel": "Cancel",
+    "ok": "Ok",
+    "more": "More",
+    "remove": "Remove",
+    "delete": "Delete",
+    "save": "Save",
+    "add": "Add",
+    "send": "Send"
+  },
+  "exercises": {
+    "title": "ACL Exercises",
+    "exercises": "Exercises",
+    "otherExercises": "Other exercises",
+    "noExercises": "No exercises",
+    "newExercise": "New exercise",
+    "time": "Time",
+    "deleteExerciseMessage": "Are you sure you deleted this exercise?",
+    "addedExerciseMessage": "Successfully added exercise",
+    "updatedExerciseMessage": "Successfully updated exercise",
+    "deletedExercises": "Deleted exercises",
+    "addedToMainList": "Added to main list",
+    "removedToMainList": "Removed from main list"
+  },
+  "profile": {
+    "myProfile": "My profile",
+    "settings": "Settings",
+    "language": "Language",
+    "logout": "Logout",
+    "takePhoto": "Take photo",
+    "chooseFromGallery": "Choose from gallery",
+    "updatedUser": "User successfully updated"
+  },
+  "messages": {
+    "pause": "Pause",
+    "excellent": "Excellent!"
+  },
+  "error": {
+    "differentPasswords": "Passwords must be the same!"
+  }
+}
