@@ -4,7 +4,7 @@ class User {
   String? username;
   String? imageUrl;
   final bool showNotifications;
-  final String langCode;
+  String langCode;
 
   User({
     required this.id,

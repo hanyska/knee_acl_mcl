@@ -56,6 +56,10 @@
     "chooseFromGallery": "Choose from gallery",
     "updatedUser": "User successfully updated"
   },
+  "language": {
+    "pl": "polski",
+    "en": "english"
+  },
   "messages": {
     "pause": "Pause",
     "excellent": "Excellent!"

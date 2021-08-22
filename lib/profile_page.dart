@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:knee_acl_mcl/components/progress_bar.dart';
 import 'package:knee_acl_mcl/components/rounded_input.dart';
+import 'package:knee_acl_mcl/components/rounded_wrapper.dart';
 import 'package:knee_acl_mcl/components/toast.dart';
 import 'package:knee_acl_mcl/main/app_bar.dart';
 import 'package:knee_acl_mcl/models/user_model.dart';
@@ -130,6 +131,71 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  void _showLanguageWidget() {
+    String lang = _user!.langCode;
+    List<String> _langList = context.supportedLocales.map((e) => e.languageCode.toLowerCase()).toList();
+
+    showModalBottomSheet(
+        useRootNavigator: true,
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) => Container(
+            padding: MediaQuery.of(context).viewInsets,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                RoundedWrapper(
+                  child: DropdownButton<String>(
+                    value: lang,
+                    isExpanded: true,
+                    icon: const Icon(Icons.arrow_drop_down),
+                    iconSize: 42,
+                    underline: SizedBox(),
+                    onChanged: (String? newValue) => setState(() => lang = newValue!),
+                    items: _langList.map((String value) => DropdownMenuItem(
+                      value: value,
+                      child: Text(tr('language.$value'))
+                    )).toList(),
+                  ),
+                ),
+                SizedBox(width: 5),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(29),
+                    child: ElevatedButton(
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        backgroundColor: Theme.of(context).primaryColor,
+                      ),
+                      child: Text(tr('button.send'), style: TextStyle(color: Colors.white)),
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                        _progressBar.show();
+
+                        User user = _user!;
+                        user.langCode = lang;
+                        UserService
+                          .updateUser(user)
+                          .then((value) async {
+                            await context.setLocale(Locale(lang));
+                            await Future.delayed(Duration(seconds: 1));
+                            Toaster.show(tr('profile.updatedUser'));
+                            _progressBar.hide();
+                            Navigator.of(context).pop();
+                          })
+                          .catchError((_) { _progressBar.hide(); });
+                      },
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )
+    );
+  }
+
   Widget get _photoWidget {
     return ElevatedButton(
       onPressed: _onUpdateAvatar,
@@ -180,7 +246,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         _profileItem(Icons.person, tr('profile.myProfile'), _showMyProfileWidget),
                         // _profileItem(Icons.notifications, 'Powiadomienia', () => print('Powiadomienia')),
                         _profileItem(Icons.settings, tr('profile.settings'), () => print('Ustawienia')),
-                        _profileItem(Icons.language, tr('profile.language'), () => print('Język')),
+                        _profileItem(Icons.language, tr('profile.language'), _showLanguageWidget),
                         _profileItem(Icons.logout, tr('profile.logout'), UserService.logout),
                       ],
                     ),
