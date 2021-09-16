@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="counterWidget" type="id" />
+    <item name="weeksCount" type="id" />
+    <item name="week" type="id" />
+    <item name="daysCount" type="id" />
+    <item name="operationText" type="id" />
+    <item name="operationDate" type="id" />
+</resources>

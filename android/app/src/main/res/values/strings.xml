@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="weeksNumber">12</string>
+    <string name="weeks">weeks</string>
+    <string name="daysNumber">88</string>
+    <string name="days">days</string>
+    <string name="operationText">Operacja</string>
+    <string name="operationDate">24 czerwca 2021</string>
+</resources>
