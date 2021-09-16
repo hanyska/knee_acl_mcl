@@ -1,8 +1,10 @@
 import 'dart:collection';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:knee_acl_mcl/helpers/date_time_helper.dart';
 import 'package:knee_acl_mcl/main/app_bar.dart';
+import 'package:knee_acl_mcl/models/progress.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -18,6 +20,7 @@ class CalendarPage extends StatefulWidget {
 
 class _CalendarPageState extends State<CalendarPage> {
   final ValueNotifier<List<Event>> _selectedEvents = ValueNotifier([]);
+  List<Progress> _progressList = [];
 
   final Set<DateTime> _selectedDays = LinkedHashSet<DateTime>(
     equals: isSameDay,
@@ -25,6 +28,12 @@ class _CalendarPageState extends State<CalendarPage> {
   );
 
   DateTime _focusedDay = DateTime.now();
+
+  @override
+  void initState() {
+
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -87,7 +96,7 @@ class _CalendarPageState extends State<CalendarPage> {
     double percent = 20.0;
 
     return Scaffold(
-      appBar: myAppBar(title: 'Progress'),
+      appBar: myAppBar(title: tr('progress.progress')),
       body: Column(
         children: [
           Card(

@@ -56,6 +56,9 @@
     "chooseFromGallery": "Wybierz z galerii",
     "updatedUser": "Pomyśnie zaktualizowano użytkownika"
   },
+  "progress": {
+    "progress": "Progres"
+  },
   "language": {
     "pl": "polski",
     "en": "english"
