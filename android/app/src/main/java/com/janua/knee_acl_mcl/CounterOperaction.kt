@@ -4,6 +4,10 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.widget.RemoteViews
+import java.lang.Math.floor
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Implementation of App Widget functionality.
@@ -27,5 +31,16 @@ class CounterOperaction : AppWidgetProvider() {
 
 internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
     val views = RemoteViews(context.packageName, R.layout.counter_operaction)
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+    val now = Date()
+    val operationDate: Date = dateFormat.parse("2021-06-24")!!
+    val diff: Long = now.time - operationDate.time
+    var inDays: Int = (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)).toInt()
+    var inWeeks: Int = kotlin.math.floor((inDays / 7).toDouble()).toInt()
+
+    views.setTextViewText(R.id.operationDate, SimpleDateFormat("dd MMMM yyyy", Locale("pl")).format(operationDate))
+    views.setTextViewText(R.id.daysCount, inDays.toString())
+    views.setTextViewText(R.id.weeksCount, inWeeks.toString())
+
     appWidgetManager.updateAppWidget(appWidgetId, views)
 }

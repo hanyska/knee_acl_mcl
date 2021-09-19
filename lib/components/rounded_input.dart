@@ -1,8 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:knee_acl_mcl/components/rounded_wrapper.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
 
-enum InputType { EMAIL, PASSWORD, TEXT, NUMBER, MULTILINE }
+enum InputType { EMAIL, PASSWORD, TEXT, NUMBER, MULTILINE, DATE }
 
 class RoundedInput extends StatefulWidget {
   final TextEditingController controller;
@@ -79,6 +80,21 @@ class _RoundedInputState extends State<RoundedInput> {
     return null;
   }
 
+  void onTapInput() async {
+    if (widget.inputType != InputType.DATE) return;
+
+    FocusScope.of(context).unfocus();
+    await showDatePicker(
+      context: context,
+      initialDate:DateTime.now(),
+      firstDate:DateTime(1900),
+      lastDate: DateTime(2100)
+    ).then((selectedDate) {
+      if (selectedDate != null) widget.controller.text = DateFormat('dd-MM-yyyy').format(selectedDate);
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return RoundedWrapper(
@@ -96,8 +112,10 @@ class _RoundedInputState extends State<RoundedInput> {
         maxLines: widget.inputType == InputType.MULTILINE
             ? 3
             : 1,
+        readOnly: widget.inputType != InputType.DATE,
         validator: _validator,
         onChanged: widget.onChanged as void Function(String)?,
+        onTap: onTapInput,
       )
     );
   }

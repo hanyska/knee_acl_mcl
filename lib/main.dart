@@ -9,7 +9,7 @@ import 'package:knee_acl_mcl/helpers/navigation_service.dart';
 import 'package:knee_acl_mcl/home_page.dart';
 import 'package:knee_acl_mcl/login_page.dart';
 import 'package:knee_acl_mcl/main/bottom_bar.dart';
-import 'package:knee_acl_mcl/profile_page.dart';
+import 'package:knee_acl_mcl/profile/profile_page.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
 
 void main() async {

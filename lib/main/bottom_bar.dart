@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:knee_acl_mcl/calendar_page.dart';
 import 'package:knee_acl_mcl/home_page.dart';
-import 'package:knee_acl_mcl/profile_page.dart';
+import 'package:knee_acl_mcl/profile/profile_page.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
