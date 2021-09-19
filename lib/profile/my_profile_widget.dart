@@ -1,9 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:knee_acl_mcl/components/progress_bar.dart';
 import 'package:knee_acl_mcl/components/rounded_button.dart';
 import 'package:knee_acl_mcl/components/rounded_input.dart';
+import 'package:knee_acl_mcl/components/toast.dart';
 import 'package:knee_acl_mcl/main/app_bar.dart';
 import 'package:knee_acl_mcl/models/user_model.dart';
+import 'package:knee_acl_mcl/native/native_service.dart';
+import 'package:knee_acl_mcl/providers/user_service.dart';
 
 class MyProfileWidget extends StatefulWidget {
   static const routeName = "/my-profile";
@@ -20,6 +24,7 @@ class MyProfileWidget extends StatefulWidget {
 }
 
 class _MyProfileWidgetState extends State<MyProfileWidget> {
+  final ProgressBar _progressBar = new ProgressBar();
   TextEditingController _userNameController = new TextEditingController();
   TextEditingController _operationDateController = new TextEditingController();
 
@@ -28,6 +33,26 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
   void initState() {
     _userNameController.text = widget.user.username ?? '';
     super.initState();
+  }
+
+  void onUpdateNickname() {
+    User user = widget.user;
+    user.username = _userNameController.text;
+    UserService
+      .updateUser(user)
+      .then((value) {
+        Toaster.show(tr('profile.updatedUser'));
+        _progressBar.hide();
+        Navigator.of(context).pop();
+      })
+      .catchError((_) { _progressBar.hide(); });
+  }
+
+  void _saveForm() {
+    DateTime date = DateFormat('dd-MM-y').parse(_operationDateController.text);
+    NativeService
+      .setOperationDate(date)
+      .then((bool value) {});
   }
 
   @override
@@ -59,7 +84,7 @@ class _MyProfileWidgetState extends State<MyProfileWidget> {
       persistentFooterButtons: [
         SizedBox(
           width: double.infinity,
-          child: RoundedButton(text: 'Zapisz', onClicked: () => print('Save'))
+          child: RoundedButton(text: 'Zapisz', onClicked: _saveForm)
         )
       ],
     );
