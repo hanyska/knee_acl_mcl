@@ -4,13 +4,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:knee_acl_mcl/components/progress_bar.dart';
-import 'package:knee_acl_mcl/components/rounded_input.dart';
 import 'package:knee_acl_mcl/components/rounded_wrapper.dart';
 import 'package:knee_acl_mcl/components/toast.dart';
 import 'package:knee_acl_mcl/main/app_bar.dart';
 import 'package:knee_acl_mcl/models/user_model.dart';
+import 'package:knee_acl_mcl/profile/my_profile_widget.dart';
 import 'package:knee_acl_mcl/providers/user_service.dart';
 import 'package:knee_acl_mcl/utils/utils.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ProfilePage extends StatefulWidget {
   static const routeName = '/profile';
@@ -80,55 +81,62 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _showMyProfileWidget() {
-    TextEditingController _userNameController = new TextEditingController();
-    _userNameController.text = _user!.username ?? '';
-
-    showModalBottomSheet(
-      useRootNavigator: true,
-      context: context,
-      isScrollControlled: true,
-      builder: (context) => Container(
-        padding: MediaQuery.of(context).viewInsets,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            RoundedInput(
-              controller: _userNameController,
-              inputType: InputType.TEXT,
-              hintText: tr('textField.username'),
-            ),
-            SizedBox(width: 5),
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(29),
-                child: ElevatedButton(
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    backgroundColor: Theme.of(context).primaryColor,
-                  ),
-                  child: Text(tr('button.send'), style: TextStyle(color: Colors.white)),
-                  onPressed: () {
-                    FocusScope.of(context).unfocus();
-                    _progressBar.show();
-
-                    User user = _user!;
-                    user.username = _userNameController.text;
-                    UserService
-                      .updateUser(user)
-                      .then((value) {
-                        Toaster.show(tr('profile.updatedUser'));
-                        _progressBar.hide();
-                        Navigator.of(context).pop();
-                      })
-                      .catchError((_) { _progressBar.hide(); });
-                  },
-                ),
-              ),
-            )
-          ],
-        ),
-      )
+    pushNewScreen(
+      context,
+      screen: MyProfileWidget(user: _user!),
+      withNavBar: false,
+      pageTransitionAnimation: PageTransitionAnimation.slideUp,
     );
+    //
+    // TextEditingController _userNameController = new TextEditingController();
+    // _userNameController.text = _user!.username ?? '';
+
+    // showModalBottomSheet(
+    //   useRootNavigator: true,
+    //   context: context,
+    //   isScrollControlled: true,
+    //   builder: (context) => Container(
+    //     padding: MediaQuery.of(context).viewInsets,
+    //     child: Row(
+    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //       children: [
+    //         RoundedInput(
+    //           controller: _userNameController,
+    //           inputType: InputType.TEXT,
+    //           hintText: tr('textField.username'),
+    //         ),
+    //         SizedBox(width: 5),
+    //         Expanded(
+    //           child: ClipRRect(
+    //             borderRadius: BorderRadius.circular(29),
+    //             child: ElevatedButton(
+    //               style: TextButton.styleFrom(
+    //                 padding: EdgeInsets.symmetric(vertical: 20),
+    //                 backgroundColor: Theme.of(context).primaryColor,
+    //               ),
+    //               child: Text(tr('button.send'), style: TextStyle(color: Colors.white)),
+    //               onPressed: () {
+    //                 FocusScope.of(context).unfocus();
+    //                 _progressBar.show();
+    //
+    //                 User user = _user!;
+    //                 user.username = _userNameController.text;
+    //                 UserService
+    //                   .updateUser(user)
+    //                   .then((value) {
+    //                     Toaster.show(tr('profile.updatedUser'));
+    //                     _progressBar.hide();
+    //                     Navigator.of(context).pop();
+    //                   })
+    //                   .catchError((_) { _progressBar.hide(); });
+    //               },
+    //             ),
+    //           ),
+    //         )
+    //       ],
+    //     ),
+    //   )
+    // );
   }
 
   void _showLanguageWidget() {
