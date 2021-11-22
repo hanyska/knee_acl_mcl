@@ -1,9 +1,12 @@
 package com.janua.knee_acl_mcl
 
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
 import android.widget.RemoteViews
 import java.lang.Math.floor
@@ -35,6 +38,21 @@ class CounterOperaction : AppWidgetProvider() {
     override fun onReceive(context: Context?, intent: Intent) {
         date = intent.getStringExtra("DATE")!!
         super.onReceive(context, intent)
+    }
+}
+
+private fun _scheduleNextUpdate(context: Context) {
+    val alarmManager: AlarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    val midnight = Calendar.getInstance()
+    midnight[Calendar.HOUR_OF_DAY] = 0
+    midnight[Calendar.MINUTE] = 0
+    midnight[Calendar.SECOND] = 1
+    midnight[Calendar.MILLISECOND] = 0
+    midnight.add(Calendar.DAY_OF_YEAR, 1)
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+        alarmManager.set(AlarmManager.RTC_WAKEUP, midnight.timeInMillis, pendingIntent)
+    } else {
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, midnight.timeInMillis, pendingIntent)
     }
 }
 
